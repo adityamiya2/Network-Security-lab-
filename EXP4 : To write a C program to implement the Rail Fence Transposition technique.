@@ -1,0 +1,154 @@
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+#include<stdio.h>
+#include<string.h>
+ 
+void encryptMsg(char msg[], int key){
+    int msgLen = strlen(msg), i, j, k = -1, row = 0, col = 0;
+    char railMatrix[key][msgLen];
+ 
+    for(i = 0; i < key; ++i)
+        for(j = 0; j < msgLen; ++j)
+            railMatrix[i][j] = '\n';
+ 
+    for(i = 0; i < msgLen; ++i){
+        railMatrix[row][col++] = msg[i];
+ 
+        if(row == 0 || row == key-1)
+            k= k * (-1);
+ 
+        row = row + k;
+    }
+ 
+    printf("\nEncrypted Message: ");
+ 
+    for(i = 0; i < key; ++i)
+        for(j = 0; j < msgLen; ++j)
+            if(railMatrix[i][j] != '\n')
+                printf("%c", railMatrix[i][j]);
+}
+ 
+void decryptMsg(char enMsg[], int key){
+    int msgLen = strlen(enMsg), i, j, k = -1, row = 0, col = 0, m = 0;
+    char railMatrix[key][msgLen];
+ 
+    for(i = 0; i < key; ++i)
+        for(j = 0; j < msgLen; ++j)
+            railMatrix[i][j] = '\n';
+ 
+    for(i = 0; i < msgLen; ++i){
+        railMatrix[row][col++] = '*';
+ 
+        if(row == 0 || row == key-1)
+            k= k * (-1);
+ 
+        row = row + k;
+    }
+ 
+    for(i = 0; i < key; ++i)
+        for(j = 0; j < msgLen; ++j)
+            if(railMatrix[i][j] == '*')
+                railMatrix[i][j] = enMsg[m++];
+ 
+    row = col = 0;
+    k = -1;
+ 
+    printf("\nDecrypted Message: ");
+ 
+    for(i = 0; i < msgLen; ++i){
+        printf("%c", railMatrix[row][col++]);
+ 
+        if(row == 0 || row == key-1)
+            k= k * (-1);
+ 
+        row = row + k;
+    }
+}
+ 
+int main(){
+    char msg[] = "Hello World";
+    char enMsg[] = "Horel ollWd";
+    int key = 3;
+ 
+    printf("Original Message: %s", msg);
+ 
+    encryptMsg(msg, key);
+    decryptMsg(enMsg, key);
+ 
+    return 0;
+}
